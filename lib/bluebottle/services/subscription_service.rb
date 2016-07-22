@@ -7,11 +7,11 @@ module BlueBottle
     end
       
     def create_subscription(customer, subscription, status)
-        update_status(customer, subscription, status)
+        update_subscription_status(customer, subscription, status)
         subscription.customers.push(customer)
     end
 
-    def update_status(customer,subscription, status) 
+    def update_subscription_status(customer,subscription, status) 
       customer.subscriptions[subscription] = status
     end
 
@@ -19,7 +19,7 @@ module BlueBottle
       if customer.subscriptions[subscription] == PAUSED
         raise 'Failed to cancel subscription. Subscription is paused'  
       else  
-        update_status(customer, subscription, CANCELLED)
+        update_subscription_status(customer, subscription, CANCELLED)
       end
     end 
     

@@ -70,7 +70,7 @@ describe BlueBottle::CodingQuestion do
     context 'when Liv pauses her subscription to Bella Donovan,' do
       before do
        subscription_service.create_subscription(liv,bella_subscription, ACTIVE)
-       subscription_service.update_status(liv,bella_subscription,PAUSED)
+       subscription_service.update_subscription_status(liv,bella_subscription,PAUSED)
       end
       it 'Liv should have zero active subscriptions' do
         expect(liv.subscriptions.values.count("active")).to eq(0)

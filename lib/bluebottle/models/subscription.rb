@@ -19,10 +19,6 @@ module BlueBottle
         @customers
       end
 
-      def add_subscriber(customer, status) 
-      	@customers[customer] = status
-      end
-
     end
   end
 end

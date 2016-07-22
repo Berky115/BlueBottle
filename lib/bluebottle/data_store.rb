@@ -29,10 +29,9 @@ module BlueBottle
       @store[:customers] << customer
     end
 
-    def add_subscription(subscription)
+    def add_subscription_type(subscription)
       @store[:subscriptions] << subscription
     end
-
-    
+ 
   end
 end

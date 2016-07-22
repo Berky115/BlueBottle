@@ -28,9 +28,9 @@ describe BlueBottle::CodingQuestion do
     store.add_coffee(giant_steps)
     store.add_coffee(hayes_valley_espresso)
 
-    store.add_subscription(bella_subscription)
-    store.add_subscription(giant_subscription)
-    store.add_subscription(hayes_valley_subscription)
+    store.add_subscription_type(bella_subscription)
+    store.add_subscription_type(giant_subscription)
+    store.add_subscription_type(hayes_valley_subscription)
   end
 
   context 'Sally subscribes to Bella Donovan' do

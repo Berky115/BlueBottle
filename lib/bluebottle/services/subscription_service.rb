@@ -2,21 +2,20 @@ module BlueBottle
   module Services
     class SubscriptionService
 
-      def initialize(data_store)
-        @data_store = data_store
-      end
+    def initialize(data_store)
+      @data_store = data_store
+    end
       
-
     def add_subscription_to_customer(customer, subscription, status)
         customer.subscriptions[subscription] = status
         subscription.customers.push(customer)
     end
 
-    def update_status(customer,subscription,status) 
+    def update_status(customer,subscription, status) 
       customer.subscriptions[subscription] = status
-   end
+    end
 
-    def cancel_subscription(customer,subscription)
+    def cancel_subscription(customer, subscription)
       if customer.subscriptions[subscription] == PAUSED
         raise 'Failed to cancel subscription. Subscription is paused'  
       else  
@@ -24,7 +23,6 @@ module BlueBottle
       end
     end 
     
-
     end
   end
 end

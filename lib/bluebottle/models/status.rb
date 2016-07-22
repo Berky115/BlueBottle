@@ -1,3 +1,3 @@
-ACTIVE= "active"
-PAUSED= "paused"
-CANCELLED= "cancelled"
+ACTIVE = "active"
+PAUSED = "paused"
+CANCELLED = "cancelled"

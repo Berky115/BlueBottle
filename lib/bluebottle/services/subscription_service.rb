@@ -11,28 +11,15 @@ module BlueBottle
     end
 
     def update_customer_subscription_status(customer, coffee, status) 
-      #this block remedied with hash/ assumption of not maintaining cancelled subscriptions. See coding_questions
-      for subscription in @data_store.subscriptions
-        if subscription.customer == customer and subscription.coffee == coffee 
-         subscription.status = status
-       else
-        raise 'Failed to update subscription. Subscription cannot be found' 
-       end
-      end
+      @data_store.subscriptions.detect {|subscription| subscription.customer == customer and subscription.coffee = coffee }.status = status
     end
 
     def cancel_subscription(customer, coffee)
-      for subscription in @data_store.subscriptions
-        if subscription.customer == customer and subscription.coffee == coffee 
-          if subscription.status == PAUSED
-           raise 'Failed to cancel subscription. Subscription is paused' 
-          else
-            subscription.status = CANCELLED
-          end
-        else
-          raise 'Failed to cancel subscription. Subscription cannot be found' 
-        end
-      end 
+      if @data_store.subscriptions.detect {|subscription| subscription.customer == customer and subscription.coffee = coffee }.status == PAUSED
+        raise 'Failed to cancel subscription. Subscription is paused' 
+      else
+        @data_store.subscriptions.detect {|subscription| subscription.customer == customer and subscription.coffee = coffee }.status = CANCELLED
+      end
     end
 
    end

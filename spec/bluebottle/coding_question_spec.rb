@@ -11,6 +11,12 @@ describe BlueBottle::CodingQuestion do
   let(:giant_steps) { BlueBottle::Models::Coffee.new(2, 'Giant Steps', 'blend') }
   let(:hayes_valley_espresso) { BlueBottle::Models::Coffee.new(3, 'Hayes Valley Espresso', 'blend') }
 
+  let(:bella_subscription) { BlueBottle::Models::Subscription.new(bella_donovan)}
+  let(:giant_subscription) { BlueBottle::Models::Subscription.new(giant_steps)}
+  let(:hayes_valley_subscription) { BlueBottle::Models::Subscription.new(hayes_valley_espresso)}  
+
+
+
   let(:store) { BlueBottle::DataStore.new }
   let(:subscription_service) { BlueBottle::Services::SubscriptionService.new(store) }
 
@@ -23,48 +29,61 @@ describe BlueBottle::CodingQuestion do
     store.add_coffee(bella_donovan)
     store.add_coffee(giant_steps)
     store.add_coffee(hayes_valley_espresso)
+
+    store.add_subscription(bella_subscription)
+    store.add_subscription(giant_subscription)
+    store.add_subscription(hayes_valley_subscription)
   end
 
   context 'Sally subscribes to Bella Donovan' do
     before do
-      # Establish subscription to Bella Donovan here
+      subscription_service.add_subscription_to_customer(sally,bella_subscription , "active")
     end
 
-    xit 'Sally should have one active subscription' do
+    it 'Sally should have one active subscription' do
+      expect(sally.subscriptions.has_key? bella_subscription).to eq(true)
     end
 
-    xit 'Bella Donovan should have one customer subscribed to it' do
+    it 'Bella Donovan should have one customer subscribed to it' do
+      expect(bella_subscription.customers).to include(sally)
     end
   end
 
   context 'Liv and Elijah subscribe to Hayes Valley Espresso' do
     before do
-      # Establish subscriptions here
+      subscription_service.add_subscription_to_customer(liv,hayes_valley_subscription, "active")
+      subscription_service.add_subscription_to_customer(elijah,hayes_valley_subscription, "active")
     end
 
-    xit 'Liv should have one active subscription' do
+    it 'Liv should have one active subscription' do
+      expect(liv.subscriptions).to include(hayes_valley_subscription)
     end
 
-    xit 'Elijah should have one active subscription' do
+    it 'Elijah should have one active subscription' do
+      expect(elijah.subscriptions).to include(hayes_valley_subscription)
     end
 
-    xit 'Hayes Valley Espresso should have two customers subscribed to it' do
+    it 'Hayes Valley Espresso should have two customers subscribed to it' do
+      expect(hayes_valley_subscription.customers.size).to eq(2)
     end
   end
 
   context 'Pausing:' do
     context 'when Liv pauses her subscription to Bella Donovan,' do
       before do
-        # Establish subscription here
+       subscription_service.add_subscription_to_customer(liv,bella_subscription, "active")
+       subscription_service.update_status(liv,bella_subscription,"pause")
+      end
+      it 'Liv should have zero active subscriptions' do
+        expect(liv.subscriptions.values.count("active")).to eq(0)
       end
 
-      xit 'Liv should have zero active subscriptions' do
+      it 'Liv should have a paused subscription' do
+        expect(liv.subscriptions.values.count("pause")).to eq(1)
       end
 
-      xit 'Liv should have a paused subscription' do
-      end
-
-      xit 'Bella Donovan should have one customers subscribed to it' do
+      it 'Bella Donovan should have one customers subscribed to it' do
+        expect(bella_subscription.customers.size).to eq(1)
       end
     end
   end
@@ -72,23 +91,25 @@ describe BlueBottle::CodingQuestion do
   context 'Cancelling:' do
     context 'when Jack cancels his subscription to Bella Donovan,' do
       before do
-        # Establish subscription here
+        subscription_service.add_subscription_to_customer(jack,bella_subscription, "active")
+        subscription_service.cancel_subscription(jack,bella_subscription)
       end
 
-      xit 'Jack should have zero active subscriptions' do
+      it 'Jack should have zero active subscriptions' do
+        expect(liv.subscriptions.values.count("active")).to eq(0)
       end
 
-      xit 'Bella Donovan should have zero active customers subscribed to it' do
+      it 'Bella Donovan should have zero active customers subscribed to it' do
+        expect(bella_subscription.customers.count("active")).to eq(0)
       end
 
       context 'when Jack resubscribes to Bella Donovan' do
         before do
-          # Establish subscription here
+          subscription_service.add_subscription_to_customer(jack,bella_subscription,"active")
         end
-
-        xit 'Bella Donovan has two subscriptions, one active, one cancelled' do
+        it 'Bella Donovan has two subscriptions, one active, one cancelled' do
+          expect(bella_subscription.customers.size).to eq(2)
         end
-
       end
     end
   end
@@ -96,14 +117,12 @@ describe BlueBottle::CodingQuestion do
   context 'Cancelling while Paused:' do
     context 'when Jack tries to cancel his paused subscription to Bella Donovan,' do
       before do
-        # Establish paused subscription here
+        subscription_service.add_subscription_to_customer(jack,bella_subscription, "pause")
       end
 
-      xit 'Jack raises an exception preventing him from cancelling a paused subscription' do
+      it 'Jack raises an exception preventing him from cancelling a paused subscription' do
+        expect{store.cancel_subscription(jack,bella_subscription)}.to raise_exception
       end
     end
   end
-
-
-
 end

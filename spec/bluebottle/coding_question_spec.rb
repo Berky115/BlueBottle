@@ -31,11 +31,11 @@ describe BlueBottle::CodingQuestion do
     end
 
     it 'Sally should have one active subscription' do
-      expect(sally.subscriptions.values.count(ACTIVE)).to eq(1)
+      expect(store.get_total_customer_subscriptions(sally,ACTIVE)).to eq(1)
     end
 
     it 'Bella Donovan should have one customer subscribed to it' do
-      expect(bella_donovan.subscriptions.size).to eq(1)
+      expect(store.get_total_coffee_subscriptions(bella_donovan,ACTIVE)).to eq(1)
     end
   end
 
@@ -46,15 +46,15 @@ describe BlueBottle::CodingQuestion do
     end
 
     it 'Liv should have one active subscription' do
-      expect(liv.subscriptions.values.count(ACTIVE)).to eq(1)
+      expect(store.get_total_customer_subscriptions(liv,ACTIVE)).to eq(1)
     end
 
     it 'Elijah should have one active subscription' do
-      expect(elijah.subscriptions.values.count(ACTIVE)).to eq(1)
+      expect(store.get_total_customer_subscriptions(elijah,ACTIVE)).to eq(1)
     end
 
     it 'Hayes Valley Espresso should have two customers subscribed to it' do
-      expect(hayes_valley_espresso.subscriptions.size).to eq(2)
+      expect(store.get_total_coffee_subscriptions(hayes_valley_espresso,ACTIVE)).to eq(2)
     end
   end
 
@@ -65,15 +65,15 @@ describe BlueBottle::CodingQuestion do
        subscription_service.update_customer_subscription_status(liv, bella_donovan, PAUSED)
       end
       it 'Liv should have zero active subscriptions' do
-        expect(liv.subscriptions.values.count(ACTIVE)).to eq(0)
+        expect(store.get_total_customer_subscriptions(liv,ACTIVE)).to eq(0)
       end
 
       it 'Liv should have a paused subscription' do
-        expect(liv.subscriptions.values.count(PAUSED)).to eq(1)
+        expect(store.get_total_customer_subscriptions(liv,PAUSED)).to eq(1)
       end
 
       it 'Bella Donovan should have one customers subscribed to it' do
-        expect(bella_donovan.subscriptions.size).to eq(1)
+        expect(store.get_total_coffee_subscriptions(bella_donovan,PAUSED)).to eq(1)
       end
     end
   end
@@ -86,21 +86,22 @@ describe BlueBottle::CodingQuestion do
       end
 
       it 'Jack should have zero active subscriptions' do
-        expect(jack.subscriptions.values.count(ACTIVE)).to eq(0)
+        expect(store.get_total_customer_subscriptions(jack,ACTIVE)).to eq(0)
       end
 
       it 'Bella Donovan should have zero active customers subscribed to it' do
-        expect(bella_donovan.subscriptions.count(ACTIVE)).to eq(0)
+        expect(store.get_total_customer_subscriptions(bella_donovan,ACTIVE)).to eq(0)
       end
 
       context 'when Jack resubscribes to Bella Donovan' do
         before do
           subscription_service.create_subscription(jack, bella_donovan, ACTIVE)
         end
+        #Question on long term use of this rule, see code questions
         it 'Bella Donovan has two subscriptions, one active, one cancelled' do
-          expect(bella_donovan.subscriptions.size).to eq(2)
-          expect(bella_donovan.subscriptions.count{|subscriber|subscriber.status == ACTIVE}).to eq(1)
-          expect(bella_donovan.subscriptions.count{|subscriber|subscriber.status == CANCELLED}).to eq(1)
+          expect(store.subscriptions.size).to eq(2)
+          expect(store.get_total_coffee_subscriptions(bella_donovan,ACTIVE)).to eq(1)
+          expect(store.get_total_coffee_subscriptions(bella_donovan,CANCELLED)).to eq(1)
         end
       end
     end
@@ -113,7 +114,7 @@ describe BlueBottle::CodingQuestion do
       end
 
       it 'Jack raises an exception preventing him from cancelling a paused subscription' do
-        expect{store.cancel_subscription(jack, bella_donovan)}.to raise_exception
+        expect{subscription_service.cancel_subscription(jack, bella_donovan)}.to raise_exception
       end
     end
   end

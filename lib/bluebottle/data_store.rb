@@ -28,10 +28,14 @@ module BlueBottle
     def add_customer(customer)
       @store[:customers] << customer
     end
-
-    def add_subscription_type(subscription)
-      @store[:subscriptions] << subscription
+    
+    def get_total_customer_subscriptions(customer, status)
+      return @store[:subscriptions].count{|subscriber|subscriber.customer == customer and subscriber.status == status}
     end
- 
+
+    def get_total_coffee_subscriptions(coffee, status)
+      return @store[:subscriptions].count{|subscriber|subscriber.coffee == coffee and subscriber.status == status}
+    end
+
   end
 end

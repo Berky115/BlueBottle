@@ -5,9 +5,6 @@ module BlueBottle
   	#
   	# Why are we maintaining customer subscriptions on both customer and subscription? 
   	#
-  	# The tests are written in a way that require both house responsibility for tracking. I would argue that this is not necessary and that customer name and status
-  	# Could be maintained in a hash on the subscriptions themselves. 
-  	#
   	# Why are we maintaining a record for cancelled as well as active?
   	#
   	# The tests at the end dictate that a record be maintained for a user that has cancelleda subscription. I don't understand

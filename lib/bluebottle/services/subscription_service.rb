@@ -11,14 +11,14 @@ module BlueBottle
     end
 
     def update_customer_subscription_status(customer, coffee, status) 
-      @data_store.subscriptions.detect {|subscription| subscription.customer == customer and subscription.coffee = coffee }.status = status
+      @data_store.subscriptions.detect {|subscription| subscription.customer == customer and subscription.coffee == coffee }.status = status
     end
 
     def cancel_subscription(customer, coffee)
-      if @data_store.subscriptions.detect {|subscription| subscription.customer == customer and subscription.coffee = coffee }.status == PAUSED
+      if @data_store.subscriptions.detect {|subscription| subscription.customer == customer and subscription.coffee == coffee }.status == PAUSED
         raise 'Failed to cancel subscription. Subscription is paused' 
       else
-        @data_store.subscriptions.detect {|subscription| subscription.customer == customer and subscription.coffee = coffee }.status = CANCELLED
+        update_customer_subscription_status(customer, coffee, CANCELLED)
       end
     end
 

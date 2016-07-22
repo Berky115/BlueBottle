@@ -17,10 +17,10 @@ module BlueBottle
    end
 
     def cancel_subscription(customer,subscription)
-      if customer.subscriptions[subscription] == "pause"
+      if customer.subscriptions[subscription] == PAUSED
         raise 'Failed to cancel subscription. Subscription is paused'  
       else  
-      customer.subscriptions[subscription] = "cancelled"
+      customer.subscriptions[subscription] = CANCELLED
       end
     end 
     

@@ -5,8 +5,7 @@ module BlueBottle
   	#
   	# Why are we maintaining customer subscriptions on both customer and subscription? 
   	#
-  	#The tests are written in a way that 
-  	# Requre both house responsibility for tracking. I would argue that this is not necessary and that customer name and status
+  	# The tests are written in a way that require both house responsibility for tracking. I would argue that this is not necessary and that customer name and status
   	# Could be maintained in a hash on the subscriptions themselves. 
   	#
   	# Why are we maintaining a record for cancelled as well as active?
@@ -15,8 +14,13 @@ module BlueBottle
   	# A reason for this decision. It means the records of status do not get removed by design, which would lead to problems 
   	# if the subscription service/DB this later stores to was put to long term use.
   	#
+  	# How often/ with what frequency is this service being used?
   	#
+  	# Assumption of new customers / coffee types / Status ?
   	#
+  	# I created the service with the assumption that new customers and coffee types would be added in the future. Meaning that
+  	# a data structure that can be easily inserted to/modified would be ideal. It occures to me that if this was set with
+  	# ONLY these customers/ coffee types / status then a different solution may be reachable.
   	#
   	#
   end

@@ -13,9 +13,11 @@ module BlueBottle
     def update_customer_subscription_status(customer, coffee, status) 
       #this block remedied with hash/ assumption of not maintaining cancelled subscriptions. See coding_questions
       for subscription in @data_store.subscriptions
-        if subscription.customer == customer and subscription.coffee ==coffee 
+        if subscription.customer == customer and subscription.coffee == coffee 
          subscription.status = status
-        end
+       else
+        raise 'Failed to update subscription. Subscription cannot be found' 
+       end
       end
     end
 
@@ -27,7 +29,9 @@ module BlueBottle
           else
             subscription.status = CANCELLED
           end
-       end
+        else
+          raise 'Failed to cancel subscription. Subscription cannot be found' 
+        end
       end 
     end
 

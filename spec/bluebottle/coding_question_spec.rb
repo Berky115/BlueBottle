@@ -35,7 +35,7 @@ describe BlueBottle::CodingQuestion do
 
   context 'Sally subscribes to Bella Donovan' do
     before do
-      subscription_service.add_subscription_to_customer(sally,bella_subscription , ACTIVE)
+      subscription_service.active_subscription(sally, bella_subscription)
     end
 
     it 'Sally should have one active subscription' do
@@ -49,8 +49,8 @@ describe BlueBottle::CodingQuestion do
 
   context 'Liv and Elijah subscribe to Hayes Valley Espresso' do
     before do
-      subscription_service.add_subscription_to_customer(liv,hayes_valley_subscription, ACTIVE)
-      subscription_service.add_subscription_to_customer(elijah,hayes_valley_subscription, ACTIVE)
+      subscription_service.active_subscription(liv,hayes_valley_subscription)
+      subscription_service.active_subscription(elijah,hayes_valley_subscription)
     end
 
     it 'Liv should have one active subscription' do
@@ -69,7 +69,7 @@ describe BlueBottle::CodingQuestion do
   context 'Pausing:' do
     context 'when Liv pauses her subscription to Bella Donovan,' do
       before do
-       subscription_service.add_subscription_to_customer(liv,bella_subscription, ACTIVE)
+       subscription_service.active_subscription(liv,bella_subscription)
        subscription_service.update_status(liv,bella_subscription,PAUSED)
       end
       it 'Liv should have zero active subscriptions' do
@@ -89,7 +89,7 @@ describe BlueBottle::CodingQuestion do
   context 'Cancelling:' do
     context 'when Jack cancels his subscription to Bella Donovan,' do
       before do
-        subscription_service.add_subscription_to_customer(jack,bella_subscription, ACTIVE)
+        subscription_service.active_subscription(jack,bella_subscription)
         subscription_service.cancel_subscription(jack,bella_subscription)
       end
 
@@ -103,7 +103,7 @@ describe BlueBottle::CodingQuestion do
 
       context 'when Jack resubscribes to Bella Donovan' do
         before do
-          subscription_service.add_subscription_to_customer(jack,bella_subscription,ACTIVE)
+          subscription_service.active_subscription(jack,bella_subscription)
         end
         it 'Bella Donovan has two subscriptions, one active, one cancelled' do
           expect(bella_subscription.customers.size).to eq(2)
@@ -115,7 +115,8 @@ describe BlueBottle::CodingQuestion do
   context 'Cancelling while Paused:' do
     context 'when Jack tries to cancel his paused subscription to Bella Donovan,' do
       before do
-        subscription_service.add_subscription_to_customer(jack,bella_subscription, PAUSED)
+        subscription_service.active_subscription(jack, bella_subscription)
+        subscription_service.update_status(jack, bella_subscription, PAUSED)
       end
 
       it 'Jack raises an exception preventing him from cancelling a paused subscription' do

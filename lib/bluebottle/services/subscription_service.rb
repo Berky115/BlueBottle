@@ -6,8 +6,8 @@ module BlueBottle
       @data_store = data_store
     end
       
-    def add_subscription_to_customer(customer, subscription, status)
-        update_status(customer, subscription, status)
+    def active_subscription(customer, subscription)
+        update_status(customer, subscription, ACTIVE)
         subscription.customers.push(customer)
     end
 

@@ -7,18 +7,18 @@ module BlueBottle
                     :first_name,
                     :last_name,
                     :email,
-                    :subscribers
+                    :subscriptions
 
       def initialize(id, first_name, last_name, email)
         @id = id
         @first_name = first_name
         @last_name = last_name
         @email = email
-        @subscribers = Hash.new
+        @subscriptions = Hash.new
       end
 
       def subscriptions
-        @subscribers
+        @subscriptions
       end
 
       def full_name

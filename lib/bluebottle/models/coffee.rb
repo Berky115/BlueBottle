@@ -5,7 +5,8 @@ module BlueBottle
     class Coffee
       attr_accessor :id,
                     :name,
-                    :type
+                    :type,
+                    :subscriptions
 
       VALID_TYPES = ['blend','single_origin']
 
@@ -13,7 +14,12 @@ module BlueBottle
         @id = id
         @name = name
         @type = type
+        @subscriptions = Array.new
         validate_type
+      end
+
+      def subscriptions
+        @subscriptions
       end
 
       private

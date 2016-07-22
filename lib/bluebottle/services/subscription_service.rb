@@ -6,20 +6,22 @@ module BlueBottle
       @data_store = data_store
     end
       
-    def create_subscription(customer, subscription, status)
-        update_subscription_status(customer, subscription, status)
-        subscription.customers.push(customer)
+    def create_subscription(customer, coffee, status)
+        update_customer_subscription_status(customer, coffee, status)
+        coffee.subscriptions.push(BlueBottle::Models::Subscription.new(customer, coffee, status))
     end
 
-    def update_subscription_status(customer,subscription, status) 
+    def update_customer_subscription_status(customer, subscription, status) 
       customer.subscriptions[subscription] = status
     end
 
-    def cancel_subscription(customer, subscription)
-      if customer.subscriptions[subscription] == PAUSED
+    def cancel_subscription(customer, coffee)
+      if customer.subscriptions[coffee] == PAUSED
         raise 'Failed to cancel subscription. Subscription is paused'  
       else  
-        update_subscription_status(customer, subscription, CANCELLED)
+        update_customer_subscription_status(customer, coffee, CANCELLED)
+        coffee.subscriptions.delete_if {|i|i.customer == customer }
+        coffee.subscriptions.push(BlueBottle::Models::Subscription.new(customer, coffee, CANCELLED))
       end
     end 
     

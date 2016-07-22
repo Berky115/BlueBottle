@@ -4,19 +4,25 @@ module BlueBottle
   module Models
     class Subscription
       attr_accessor :coffee,
-                    :customers
+                    :customer,
+                    :status
 
-      def initialize(coffee)
+      def initialize(customer, coffee, status)
       	@coffee = coffee
-        @customers = Array.new
+        @customer = customer
+        @status = status
       end
 
       def coffee
         @coffee
       end
 
-      def customers
-        @customers
+      def customer
+        @customer
+      end
+
+       def status
+        @status
       end
 
     end
